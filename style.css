@@ -127,7 +127,13 @@ button:hover {
 /* 
 OPTIONS CONTAINER */
 
-#options-container label {
+
+/* #options-container label {
     display: flex;
     flex-direction: block;
+} */
+
+.radio-item {
+    display: block;
+    margin-right: 10px;
 }

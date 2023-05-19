@@ -40,9 +40,12 @@ function sendWebhookMessage(correctAnswers, wrongAnswers) {
 
 
 function fetchQuestions() {
-    fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=medium')
-
-    .then(response => response.json())
+    fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=medium', {
+            headers: {
+                'Accept-Charset': 'utf-8'
+            }
+        })
+        .then(response => response.json())
         .then(data => {
             handleQuestions(data.results);
             showQuestion(currentQuestionIndex);
@@ -77,7 +80,10 @@ function showQuestion(questionIndex) {
         const question = window.quizQuestions[questionIndex].question;
         const correctAnswer = window.quizQuestions[questionIndex].correct_answer;
         const wrongAnswers = window.quizQuestions[questionIndex].incorrect_answers;
-        questionContainer.innerHTML = question;
+        questionContainer.innerHTML = he.decode(question);
+
+
+
 
 
         const allAnswers = [...wrongAnswers, correctAnswer];
@@ -86,16 +92,20 @@ function showQuestion(questionIndex) {
         const shuffledAnswers = shuffleArray(allAnswers);
 
         shuffledAnswers.forEach(answer => {
+            const radioDiv = document.createElement('div');
+            radioDiv.classList.add('radio-item');
+
             const radioBtn = document.createElement('input');
             radioBtn.type = 'radio';
             radioBtn.name = 'answer';
             radioBtn.value = answer;
 
             const label = document.createElement('label');
-            label.innerText = answer;
+            label.innerHTML = answer;
 
-            optionsContainer.appendChild(radioBtn);
-            optionsContainer.appendChild(label);
+            radioDiv.appendChild(radioBtn);
+            radioDiv.appendChild(label);
+            optionsContainer.appendChild(radioDiv);
         });
 
         submitButton.disabled = false;
