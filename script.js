@@ -1,6 +1,43 @@
 let currentQuestionIndex = 0;
 let score = 0;
 let gameActive = false;
+const webhookUrl = 'https://discord.com/api/webhooks/1108967767513763922/ypvkHBAi43Bse3EZpZuakepm1Y60BAVMGptKxdyU1i54SVw_nxNYzxln1faUgNfAY1dt';
+
+
+function sendWebhookMessage(correctAnswers, wrongAnswers) {
+    const message = {
+        embeds: [{
+            title: 'Quiz Færdig',
+            description: 'Resultater:',
+            color: 0x00ff00, // Specify a color for the embed (optional)
+            fields: [{
+                    name: 'Korrekte Svar',
+                    value: correctAnswers.toString(),
+                },
+                {
+                    name: 'Forkerte Svar',
+                    value: wrongAnswers.toString(),
+                }
+            ]
+        }]
+    };
+
+    fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(message)
+        })
+        .then(() => {
+            console.log('Webhook sendt! :)');
+        })
+        .catch(error => {
+            console.error('Fejl:', error);
+        });
+}
+
+
 
 function fetchQuestions() {
     fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=medium')
@@ -169,6 +206,7 @@ function showScore() {
     const wrongAnswers = totalQuestions - correctAnswers;
 
     scoreContainer.innerHTML = `Korrekte: ${correctAnswers}<br>Forkerte svar: ${wrongAnswers}`;
+    sendWebhookMessage(correctAnswers, wrongAnswers);
 }
 
 function openGamePopup() {
