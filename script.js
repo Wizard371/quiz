@@ -3,7 +3,7 @@ let score = 0;
 let gameActive = false;
 
 function fetchQuestions() {
-    fetch('https://opentdb.com/api.php?amount=5&type=multiple')
+    fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=medium')
 
     .then(response => response.json())
         .then(data => {
@@ -22,9 +22,9 @@ function handleQuestions(questions) {
 function showQuestion(questionIndex) {
     const questionContainer = document.getElementById('question-container');
     const optionsContainer = document.getElementById('options-container');
-    const submitButton = document.getElementById('submift-button');
+    const submitButton = document.getElementById('submit-button');
     const nextButton = document.getElementById('next-button');
-    const startButton = document.getElementById('start-button');
+    const startButton = document.querySelector('.start-btn');
     const questionsRemaining = window.quizQuestions.length - currentQuestionIndex;
     const questionsAnswered = currentQuestionIndex;
 
@@ -63,7 +63,6 @@ function showQuestion(questionIndex) {
 
         submitButton.disabled = false;
         nextButton.disabled = true;
-        d
 
         resetAnswerColors();
 
